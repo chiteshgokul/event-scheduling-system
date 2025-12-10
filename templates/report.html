@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="mb-4">
+  <h2 class="mb-1">Resource Utilisation Report</h2>
+  <p class="text-muted mb-0">
+    Analyse how your rooms, instructors and equipment are utilised over a selected date range.
+  </p>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card shadow-sm">
+  <div class="card-body">
+
+    <!-- FILTER FORM -->
+    <div class="mb-3">
+      <h5 class="card-title mb-2">Filters</h5>
+      <form method="post" class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Start Date</label>
+          <input type="date"
+                 name="start_date"
+                 class="form-control"
+                 value="{{ start_date or '' }}"
+                 required>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">End Date</label>
+          <input type="date"
+                 name="end_date"
+                 class="form-control"
+                 value="{{ end_date or '' }}"
+                 required>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary w-100">
+            Generate Report
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {% if report_data %}
+      <!-- SUMMARY TABLE -->
+      <hr class="mt-1 mb-3">
+      <h5 class="card-title mb-2">Summary</h5>
+      <p class="text-muted">
+        Showing utilisation between
+        <strong>{{ start_date }}</strong> and <strong>{{ end_date }}</strong>.
+      </p>
+
+      <div class="table-responsive mb-4">
+        <table class="table align-middle table-hover">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Resource</th>
+              <th scope="col">Type</th>
+              <th scope="col">Total Hours Utilised</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for r in report_data %}
+            <tr>
+              <td class="fw-semibold">{{ r.resource.resource_name }}</td>
+              <td>
+                <span class="badge bg-primary text-light">
+                  {{ r.resource.resource_type }}
+                </span>
+              </td>
+              <td>{{ r.total_hours }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- UPCOMING BOOKINGS -->
+      <h5 class="card-title mb-2">Upcoming Bookings</h5>
+      {% if upcoming %}
+        <div class="table-responsive">
+          <table class="table align-middle table-hover">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Resource</th>
+                <th scope="col">Event</th>
+                <th scope="col">Start</th>
+                <th scope="col">End</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for item in upcoming %}
+              <tr>
+                <td class="fw-semibold">{{ item.resource.resource_name }}</td>
+                <td>{{ item.event.title }}</td>
+                <td>{{ item.event.start_time }}</td>
+                <td>{{ item.event.end_time }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted mb-0">
+          No upcoming bookings found in this date range.
+        </p>
+      {% endif %}
+    {% else %}
+      <!-- EMPTY STATE BEFORE FIRST RUN -->
+      <hr class="mt-1 mb-3">
+      <div class="text-center py-4">
+        <p class="text-muted mb-2">
+          Select a start and end date above, then click <strong>Generate Report</strong>
+          to see utilisation details.
+        </p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

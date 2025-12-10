@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ action }} Event</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input type="text" name="title" class="form-control"
+           value="{{ event.title if event else '' }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="description" class="form-control" rows="3">{{ event.description if event else '' }}</textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Start Time</label>
+    <input type="datetime-local" name="start_time" class="form-control"
+           value="{% if event %}{{ event.start_time.strftime('%Y-%m-%dT%H:%M') }}{% endif %}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">End Time</label>
+    <input type="datetime-local" name="end_time" class="form-control"
+           value="{% if event %}{{ event.end_time.strftime('%Y-%m-%dT%H:%M') }}{% endif %}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Allocate Resources</label>
+    <div class="row">
+      {% for r in resources %}
+        <div class="col-md-4">
+          <div class="form-check">
+            <input class="form-check-input"
+                   type="checkbox"
+                   name="resources"
+                   value="{{ r.resource_id }}"
+                   id="res_{{ r.resource_id }}"
+                   {% if selected_resource_ids and r.resource_id in selected_resource_ids %}checked{% endif %}>
+            <label class="form-check-label" for="res_{{ r.resource_id }}">
+              {{ r.resource_name }} ({{ r.resource_type }})
+            </label>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success">{{ action }}</button>
+  <a href="{{ url_for('list_events') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

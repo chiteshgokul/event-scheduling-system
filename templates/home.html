@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<div class="hero">
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h1>Event Scheduling & Resource Allocation System</h1>
+      <p>
+        Plan workshops, seminars and classes, allocate rooms and instructors,
+        and avoid double-bookings with smart conflict detection.
+      </p>
+      <div class="mt-3">
+        <a href="{{ url_for('add_event') }}" class="btn btn-light me-2">
+          ➕ Schedule New Event
+        </a>
+        <a href="{{ url_for('add_resource') }}" class="btn btn-outline-light">
+          🏷 Add New Resource
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+      <p class="mb-0">Today is</p>
+      <p class="fw-semibold">Use the quick actions to get started.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STAT CARDS ROW -->
+<div class="row mb-4">
+  <!-- TOTAL EVENTS (clickable) -->
+  <div class="col-md-4 mb-3">
+    <a href="{{ url_for('list_events') }}" class="text-decoration-none text-dark">
+      <div class="card dash-card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">📅 Total Events</h5>
+          <p class="display-6 mb-0">{{ events_count }}</p>
+          <small class="text-muted">All scheduled sessions (click to view)</small>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- RESOURCES (clickable) -->
+  <div class="col-md-4 mb-3">
+    <a href="{{ url_for('list_resources') }}" class="text-decoration-none text-dark">
+      <div class="card dash-card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">🧩 Resources</h5>
+          <p class="display-6 mb-0">{{ resources_count }}</p>
+          <small class="text-muted">Rooms, instructors & equipment (click to view)</small>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- CONFLICT CHECK (clickable) -->
+  <div class="col-md-4 mb-3">
+    <a href="{{ url_for('conflict_view') }}" class="text-decoration-none text-dark">
+      <div class="card dash-card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">⚠ Conflict Check</h5>
+          <p class="mb-2">Quickly scan for overlapping bookings.</p>
+          <span class="btn btn-outline-primary btn-sm">View Conflicts</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="row">
+  <!-- UPCOMING EVENTS LIST -->
+  <div class="col-lg-8 mb-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title mb-3">📌 Upcoming Events</h5>
+
+        {% if upcoming_events %}
+          <ul class="list-group list-group-flush">
+            {% for e in upcoming_events %}
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-0">
+                  <!-- Event title clickable (go to edit page) -->
+                  <a href="{{ url_for('edit_event', event_id=e.event_id) }}"
+                     class="h6 text-decoration-none">
+                    {{ e.title }}
+                  </a><br>
+                  <small class="text-muted">
+                    ⏱ {{ e.start_time }} → {{ e.end_time }}
+                  </small><br>
+
+                  <small>
+                    {% if e.allocations %}
+                      {% for alloc in e.allocations %}
+                        <span class="badge bg-primary text-light">
+                          {{ alloc.resource.resource_name }} ({{ alloc.resource.resource_type }})
+                        </span>
+                      {% endfor %}
+                    {% else %}
+                      <span class="badge bg-light text-dark border">No resources</span>
+                    {% endif %}
+                  </small>
+                </div>
+
+                <div class="text-end">
+                  <a href="{{ url_for('edit_event', event_id=e.event_id) }}"
+                     class="btn btn-outline-secondary btn-sm">
+                    View
+                  </a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted mb-0">
+            No upcoming events yet.
+            <a href="{{ url_for('add_event') }}">Create your first event</a>.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN: REPORT + TIP -->
+  <div class="col-lg-4 mb-4">
+
+    <!-- REPORT CARD (clickable) -->
+    <div class="card shadow-sm mb-3">
+      <a href="{{ url_for('utilisation_report') }}" class="text-decoration-none text-dark">
+        <div class="card-body">
+          <h5 class="card-title">📊 Resource Utilisation Report</h5>
+          <p class="mb-2">
+            View how many hours each resource is booked and see upcoming bookings
+            for a selected date range.
+          </p>
+          <span class="btn btn-outline-primary btn-sm">Open Report</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- TIP CARD -->
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="card-title">💡 Tip</h6>
+        <p class="mb-0">
+          When scheduling an event, allocate all required resources (room, instructor,
+          equipment) in one go to avoid conflicts later.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

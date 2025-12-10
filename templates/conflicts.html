@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+<div class="mb-4">
+  <h2 class="mb-1">Conflict Detection</h2>
+  <p class="text-muted mb-0">
+    View overlapping bookings where the same resource is allocated to multiple events at the same time.
+  </p>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card shadow-sm">
+  <div class="card-body">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h5 class="card-title mb-0">Detected Conflicts</h5>
+        <small class="text-muted">
+          {% if conflicts %}
+            {{ conflicts|length }} conflict{{ '' if conflicts|length == 1 else 's' }} found
+          {% else %}
+            No conflicts currently detected
+          {% endif %}
+        </small>
+      </div>
+      <a href="{{ url_for('list_events') }}" class="btn btn-outline-primary btn-sm">
+        View Events
+      </a>
+    </div>
+
+    {% if conflicts %}
+      <div class="table-responsive">
+        <table class="table align-middle table-hover">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Resource</th>
+              <th scope="col">Event 1</th>
+              <th scope="col">Event 2</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for c in conflicts %}
+            <tr>
+              <td class="fw-semibold">
+                {{ c.resource }}
+              </td>
+              <td>
+                <div class="fw-semibold">{{ c.event1.title }}</div>
+                <small class="text-muted">
+                  {{ c.event1.start_time }} &rarr; {{ c.event1.end_time }}
+                </small>
+              </td>
+              <td>
+                <div class="fw-semibold">{{ c.event2.title }}</div>
+                <small class="text-muted">
+                  {{ c.event2.start_time }} &rarr; {{ c.event2.end_time }}
+                </small>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <!-- EMPTY STATE -->
+      <div class="text-center py-4">
+        <p class="text-muted mb-2">
+          🎉 Great! There are no conflicting bookings at the moment.
+        </p>
+        <p class="mb-0">
+          You can create or edit events from the
+          <a href="{{ url_for('list_events') }}">Events</a> page.
+        </p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ action }} Resource</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Resource Name</label>
+    <input type="text" name="resource_name" class="form-control"
+           value="{{ resource.resource_name if resource else '' }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Resource Type</label>
+    <input type="text" name="resource_type" class="form-control"
+           value="{{ resource.resource_type if resource else '' }}" required>
+  </div>
+
+  <button type="submit" class="btn btn-success">{{ action }}</button>
+  <a href="{{ url_for('list_resources') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
