@@ -53,21 +53,30 @@ new_start < existing_end AND new_end > existing_start
 ### 📊 Resource Utilisation Logic
 Total Hours = (min(event_end, selected_range_end) - max(event_start, selected_range_start))
 
-### 📂 Project Structure
+## 📂 Project Structure
 
-### event-scheduling-system/
- ### │ app.py
- ### │ requirements.txt
- ### │ README.md
- ### ├── templates/
- ### │   ├── base.html
- ### │   ├── home.html
- ### │   ├── events.html
- ### │   ├── resources.html
- ### │   ├── conflicts.html
- ### │   └── report.html
- ### │
- ### └── static/
+```text
+event-scheduling-system/
+│ app.py
+│ requirements.txt
+│ README.md
+│
+├── templates/
+│   ├── base.html
+│   ├── home.html
+│   ├── events.html
+│   ├── resources.html
+│   ├── conflicts.html
+│   └── report.html
+│
+├── static/
+└── screenshots/
+    ├── home.png
+    ├── events.png
+    ├── resources.png
+    ├── conflicts.png
+    └── report.png
+
 
 
 ### 💻 How to Run
