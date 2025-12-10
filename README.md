@@ -47,26 +47,28 @@ The system automatically detects double booking conflicts and generates a resour
 ## 🧠 Logic Used
 
 ### 🔹 Conflict Detection Logic
+
 new_start < existing_end AND new_end > existing_start
 
-###📊 Resource Utilisation Logic
+### 📊 Resource Utilisation Logic
 Total Hours = (min(event_end, selected_range_end) - max(event_start, selected_range_start))
 
-###📂 Project Structure
-event-scheduling-system/
-│ app.py
-│ requirements.txt
-│ README.md
-│
-├── templates/
-│   ├── base.html
-│   ├── home.html
-│   ├── events.html
-│   ├── resources.html
-│   ├── conflicts.html
-│   └── report.html
-│
-└── static/
+### 📂 Project Structure
+
+### event-scheduling-system/
+ ### │ app.py
+ ### │ requirements.txt
+ ### │ README.md
+ ### ├── templates/
+ ### │   ├── base.html
+ ### │   ├── home.html
+ ### │   ├── events.html
+ ### │   ├── resources.html
+ ### │   ├── conflicts.html
+ ### │   └── report.html
+ ### │
+ ### └── static/
+
 
 ### 💻 How to Run
 ###  1️⃣ Install dependencies
@@ -80,5 +82,4 @@ http://127.0.0.1:5000/
 
 
 
-A conflict occurs if **time intervals overlap** AND the **same resource** is used:
 
