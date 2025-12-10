@@ -76,7 +76,7 @@ event-scheduling-system/
     ├── resources.png
     ├── conflicts.png
     └── report.png
-
+```
 
 
 ### 💻 How to Run
